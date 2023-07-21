@@ -11,6 +11,7 @@ public class AirEnemyMovement : MonoBehaviour
     private bool movingRight = true;
     private float initialX;
     private SpriteRenderer spriteRenderer;
+    private bool isDead = false; // Add a flag to track if the enemy is dead.
 
     void Start()
     {
@@ -20,28 +21,37 @@ public class AirEnemyMovement : MonoBehaviour
 
     void Update()
     {
-        // Calculate the movement vector
-        float moveDirection = movingRight ? 1f : -1f;
-        Vector3 movement = new Vector3(moveSpeed * moveDirection, 0f, 0f) * Time.deltaTime;
-
-        // Move the enemy
-        transform.Translate(movement);
-
-        // Check if the enemy has reached the boundaries and switch movement direction
-        if (transform.position.x >= initialX + rightBoundary)
+        if (!isDead) // Only move if the enemy is not dead.
         {
-            movingRight = false;
-            FlipSprite();
-        }
-        else if (transform.position.x <= initialX + leftBoundary)
-        {
-            movingRight = true;
-            FlipSprite();
+            // Calculate the movement vector
+            float moveDirection = movingRight ? 1f : -1f;
+            Vector3 movement = new Vector3(moveSpeed * moveDirection, 0f, 0f) * Time.deltaTime;
+
+            // Move the enemy
+            transform.Translate(movement);
+
+            // Check if the enemy has reached the boundaries and switch movement direction
+            if (transform.position.x >= initialX + rightBoundary)
+            {
+                movingRight = false;
+                FlipSprite();
+            }
+            else if (transform.position.x <= initialX + leftBoundary)
+            {
+                movingRight = true;
+                FlipSprite();
+            }
         }
     }
 
     void FlipSprite()
     {
         spriteRenderer.flipX = !spriteRenderer.flipX;
+    }
+
+    // Add a public function to set the enemy as dead (call this from the Die() function in the EnemyController).
+    public void SetDead()
+    {
+        isDead = true;
     }
 }
