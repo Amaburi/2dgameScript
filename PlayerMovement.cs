@@ -24,12 +24,7 @@ public class PlayerMovement : MonoBehaviour {
 	private bool canDoubleJump = false;
 	public int extraLives = 3;
 	[SerializeField] private Rigidbody2D rb;
-	public PlayerHealth playerHealth;
-
-	void Start()
-	{
-		playerHealth = GetComponent<PlayerHealth>();
-	}
+	
 	// Update is called once per frame
 	void Update () {
 		bool isSprinting = Input.GetKey(KeyCode.LeftShift);
@@ -46,6 +41,7 @@ public class PlayerMovement : MonoBehaviour {
 			
 			animator.SetBool("IsClimbing", true);
 		}
+		
 
 		if (isGrounded)
 		{
@@ -71,30 +67,9 @@ public class PlayerMovement : MonoBehaviour {
 		}
 
 	}
-	private void OnTriggerEnter2D(Collider2D other)
-	{
-		if (other.CompareTag("Heart"))
-		{
-			CollectHeart(other.gameObject);
-		}
-		else if (other.CompareTag("Enemy"))
-		{
-			TakeDamageFromEnemy();
-		}
-	}
-	private void CollectHeart(GameObject heart)
-	{
-		extraLives++;
-		// Play sound or visual effects if desired.
-
-		// Destroy the heart GameObject after collecting it.
-		Destroy(heart);
-	}
-	private void TakeDamageFromEnemy()
-	{
-		playerHealth.TakeDamage(1); // Player takes 1 damage when hit by an enemy.
-		Debug.Log("Heart reduced by 1!");
-	}
+	
+	
+	
 
 	public void Onlanding()
     {

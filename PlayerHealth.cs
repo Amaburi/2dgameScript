@@ -1,15 +1,18 @@
 using UnityEngine;
-
+using TMPro;
 public class PlayerHealth : MonoBehaviour
 {
     private int maxHealth = 10;
     private int currentHealth;
     private Animator animator;
+    public TextMeshProUGUI livesText;
+    public AudioClip coinCollectSound;
 
     private void Start()
     {
         currentHealth = maxHealth;
         animator = GetComponent<Animator>();
+        UpdateLivesText();
     }
 
     public void TakeDamage(int damageAmount)
@@ -23,8 +26,29 @@ public class PlayerHealth : MonoBehaviour
         {
             Die();
         }
+        UpdateLivesText();
     }
-
+    private void OnTriggerEnter2D(Collider2D other)
+    {
+        if (other.CompareTag("Heart"))
+        {
+            CollectHeart(other.gameObject);
+        }
+        else if (other.CompareTag("Enemy"))
+        {
+            TakeDamage(1);
+        }
+    }
+    private void CollectHeart(GameObject heart)
+    {
+        currentHealth++;
+        // Play sound or visual effects if desired.
+        AudioSource.PlayClipAtPoint(coinCollectSound, transform.position);
+        Debug.Log("collected the heart");
+        // Destroy the heart GameObject after collecting it.
+        Destroy(heart);
+        UpdateLivesText();
+    }
     private void Die()
     {
         // Trigger the death animation.
@@ -42,4 +66,8 @@ public class PlayerHealth : MonoBehaviour
     }
 
     // Add any other health-related functionality here.
+    private void UpdateLivesText()
+    {
+        livesText.text = currentHealth.ToString();
+    }
 }

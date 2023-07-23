@@ -14,7 +14,7 @@ public class Coin : MonoBehaviour
 
             // You can also add other behavior here, like updating the score.
             GameManager.Instance.CollectCoin(coinValue);
-
+            Debug.Log("Coin Collected: " + coinValue);
             Destroy(gameObject);
         }
     }
