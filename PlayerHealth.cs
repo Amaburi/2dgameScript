@@ -6,12 +6,14 @@ public class PlayerHealth : MonoBehaviour
     private int currentHealth;
     private Animator animator;
     public TextMeshProUGUI livesText;
+    public TextMeshProUGUI gameoverText;
     public AudioClip coinCollectSound;
 
     private void Start()
     {
         currentHealth = maxHealth;
         animator = GetComponent<Animator>();
+        gameoverText.gameObject.SetActive(false);
         UpdateLivesText();
     }
 
@@ -52,8 +54,10 @@ public class PlayerHealth : MonoBehaviour
     private void Die()
     {
         // Trigger the death animation.
+        
         animator.SetBool("IsDeath", true);
-
+        
+        Debug.Log("Game Over text set active!");
         // Disable the player's movement script, so the player cannot move after death.
         PlayerMovement playerMovement = GetComponent<PlayerMovement>();
         if (playerMovement != null)
@@ -63,6 +67,9 @@ public class PlayerHealth : MonoBehaviour
 
         // Disable the player's collider to avoid further collisions.
         GetComponent<Collider2D>().enabled = false;
+        gameoverText.gameObject.SetActive(true);
+
+
     }
 
     // Add any other health-related functionality here.
