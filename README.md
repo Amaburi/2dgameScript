@@ -1,1 +1,1 @@
-# 2dgameScript Created using unity
+# 2dgameScript Created for unity 2d game
